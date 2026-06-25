@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REDIHAT LABS FIRMWARE FOR 2.8 INCH CYD</title>
+    <!-- Import Outfit and JetBrains Mono Fonts from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=2.0.6">
+    <!-- ESP Web Tools component -->
+    <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
+</head>
+<body>
+    <canvas id="matrix-canvas"></canvas>
+    <div class="background-glow"></div>
+    
+    <div class="container">
+        <header>
+            <img src="logo.png" alt="REDIHAT LABS Logo" class="header-logo">
+            <div class="logo">ESP32DIV X BRUCE FOR CYD</div>
+            <h1>REDIHAT LABS FIRMWARE FOR 2.8 INCH CYD</h1>
+            <p class="subtitle">Flash ESP32-DIV or Bruce Firmware directly to your 2.8" Cheap Yellow Display (CYD / ESP32-2432S028) in one click.</p>
+        </header>
+
+        <main>
+            <!-- Step 1: Select Firmware -->
+            <section class="selection-section">
+                <h2>1. Select Firmware Variant</h2>
+                <div class="firmware-grid">
+                    <!-- Card 1: ESP32-DIV 16MB -->
+                    <div class="firmware-card" data-fw="div-16mb">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <span class="badge div-badge">ESP32-DIV</span>
+                            <h3>ESP32-DIV Port (16MB)</h3>
+                            <p class="description">Ported ESP32-DIV security toolkit configured for CYD. Features Ebyte E07 CC1101 PA control.</p>
+                            <div class="specs">
+                                <span>📁 Size: 1.8 MB (Merged)</span>
+                                <span>🔧 Flash: 16MB</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: ESP32-DIV 4MB -->
+                    <div class="firmware-card" data-fw="div-4mb">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <span class="badge div-badge">ESP32-DIV</span>
+                            <h3>ESP32-DIV Port (4MB)</h3>
+                            <p class="description">Ported ESP32-DIV security toolkit configured for CYD. Features Ebyte E07 CC1101 PA control.</p>
+                            <div class="specs">
+                                <span>📁 Size: 1.8 MB (Merged)</span>
+                                <span>🔧 Flash: 4MB</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Bruce CYD Standard -->
+                    <div class="firmware-card" data-fw="bruce-std">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <span class="badge bruce-badge">Bruce</span>
+                            <h3>Bruce Firmware (HH Pins)</h3>
+                            <p class="description">Bruce multi-tool compiled for CYD utilizing standard HH pin configurations.</p>
+                            <div class="specs">
+                                <span>📁 Size: 3.5 MB (Merged)</span>
+                                <span>🔧 Flash: 4MB+</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 2: Flash -->
+            <section class="flash-section">
+                <h2>2. Connect and Program</h2>
+                <div class="flash-card glass">
+                    <div id="selection-placeholder" class="placeholder-text">
+                        <p>Please select a firmware variant above to begin flashing.</p>
+                    </div>
+                    <div id="flasher-controls" class="hidden">
+                        <div class="selected-info">
+                            <p>Ready to flash: <strong id="selected-fw-title">-</strong></p>
+                            <p class="file-info">Binary Path: <code id="selected-fw-path">-</code></p>
+                        </div>
+                        <div class="button-container">
+                            <!-- ESP Web Tools Install Button -->
+                            <esp-web-install-button id="install-button">
+                                <button slot="activate" class="custom-flash-btn">Connect & Flash</button>
+                                <span slot="unsupported">Your browser does not support Web Serial. Use Chrome, Edge, or Opera.</span>
+                            </esp-web-install-button>
+                            <a id="download-bin-btn" class="custom-download-btn" download>Download .BIN</a>
+                        </div>
+                        <p class="sd-card-tip">
+                            <strong>SD Card Launcher support:</strong> Alternatively, click "Download .BIN" to save the raw firmware file directly. Copy it to your SD card (e.g. root or update folder) to boot it using a CYD Multi-Firmware Launcher.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 3: Drivers & Setup -->
+            <section class="driver-section">
+                <h2>3. USB Drivers & Setup</h2>
+                <div class="driver-card glass">
+                    <div class="driver-info">
+                        <h3>Connection & Driver Disclaimer</h3>
+                        <p>To successfully program your ESP32 board directly from the browser, your computer needs the correct USB-to-UART bridge drivers installed. Without these drivers, your system will not recognize the COM port of your device.</p>
+                        <p class="warning-text">If your device is not detected when you click "Connect & Flash", please download and install the driver corresponding to your board's USB chip below, then restart your browser.</p>
+                    </div>
+                    <div class="driver-links-grid">
+                        <a href="https://www.wch-ic.com/downloads/CH341SER_EXE.html" target="_blank" class="driver-btn">
+                            <span class="btn-title">CH340 / CH341 Driver</span>
+                            <span class="btn-desc">Common for low-cost ESP32 / CYD boards (Windows EXE)</span>
+                        </a>
+                        <a href="https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers" target="_blank" class="driver-btn">
+                            <span class="btn-title">CP210x VCP Drivers</span>
+                            <span class="btn-desc">Common for official NodeMCU & Espressif kits</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>ESP32DIV X BRUCE Port Project • Designed for Cheap Yellow Display</p>
+            <p class="footer-links">
+                <a href="https://github.com/REDIHAT/hh-x-esp32div-x-bruce" target="_blank">View GitHub Repo</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- JavaScript to handle UI Selection and dynamic Manifest Generation -->
+    <script>
+        // Check for file protocol (running index.html directly from local explorer)
+        if (window.location.protocol === 'file:') {
+            const container = document.querySelector('.container');
+            const warningBanner = document.createElement('div');
+            warningBanner.className = 'warning-banner';
+            warningBanner.innerHTML = `
+                <strong>⚠️ Running Locally via File Protocol Detected</strong><br>
+                Browser security policies block flashing firmware files when opened directly as a local file (file://).<br>
+                Please use the live site: <a href="https://REDIHAT.github.io/halehound-x-esp32div-x-bruce/" target="_blank" style="color: #ff0000; font-weight: 700; text-decoration: underline;">https://REDIHAT.github.io/halehound-x-esp32div-x-bruce/</a> or host it on a local web server (e.g. <code>python -m http.server 8000</code>).
+            `;
+            container.insertBefore(warningBanner, container.firstChild);
+        }
+
+        const cards = document.querySelectorAll('.firmware-card');
+        const placeholder = document.getElementById('selection-placeholder');
+        const controls = document.getElementById('flasher-controls');
+        const selectedTitle = document.getElementById('selected-fw-title');
+        const selectedPath = document.getElementById('selected-fw-path');
+        const installBtn = document.getElementById('install-button');
+        const downloadBtn = document.getElementById('download-bin-btn');
+
+        // Firmware configuration mapping
+        const firmwareData = {
+            'div-16mb': {
+                name: "ESP32-DIV Port (16MB)",
+                title: "ESP32-DIV Port (16MB Flash, Huge App / FATFS)",
+                path: "firmware/esp32_div_cyd_16mb_full.bin",
+                version: "2.1.0"
+            },
+            'div-4mb': {
+                name: "ESP32-DIV Port (4MB)",
+                title: "ESP32-DIV Port (4MB Flash, Huge App Partition)",
+                path: "firmware/esp32_div_cyd_4mb_full.bin",
+                version: "2.1.0"
+            },
+            'bruce-std': {
+                name: "Bruce Firmware (Standard)",
+                title: "Bruce Firmware (HH Pins / TX_EN on GPIO 4)",
+                path: "firmware/Bruce-CYD-2432S028-HH-pins-merged.bin",
+                version: "1.0.0"
+            }
+        };
+
+        // Active blob URL to revoke later
+        let activeBlobUrl = null;
+
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                // Clear active class from all cards
+                cards.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked card
+                card.classList.add('active');
+
+                const fwKey = card.dataset.fw;
+                const fw = firmwareData[fwKey];
+
+                if (fw) {
+                    // Update descriptions
+                    selectedTitle.textContent = fw.title;
+                    selectedPath.textContent = fw.path;
+
+                    // Resolve relative paths to absolute URLs relative to the current page's origin.
+                    // This is required because resolving relative paths against dynamic Blob URLs (blob:https://...) throws an 'Invalid URL' error.
+                    let resolvedPath = fw.path;
+                    if (!resolvedPath.startsWith('http://') && !resolvedPath.startsWith('https://')) {
+                        resolvedPath = new URL(fw.path, window.location.href).href;
+                    }
+
+                    // Set download button properties
+                    downloadBtn.href = resolvedPath;
+                    downloadBtn.download = fw.path.split('/').pop();
+
+                    // Generate manifest dynamically
+                    const manifest = {
+                        name: fw.name,
+                        version: fw.version || "1.0.0",
+                        new_install_prompt_erase: true,
+                        builds: [
+                            {
+                                chipFamily: "ESP32",
+                                parts: [
+                                    { path: resolvedPath, offset: 0 }
+                                ]
+                            }
+                        ]
+                    };
+
+                    // Revoke previous blob URL if exists
+                    if (activeBlobUrl) {
+                        URL.revokeObjectURL(activeBlobUrl);
+                    }
+
+                    // Create Blob URL for manifest
+                    const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+                    activeBlobUrl = URL.createObjectURL(blob);
+
+                    // Assign to ESP Web Tools button
+                    installBtn.setAttribute('manifest', activeBlobUrl);
+
+                    // Show controls
+                    placeholder.classList.add('hidden');
+                    controls.classList.remove('hidden');
+                }
+            });
+        });
+
+        // Matrix Digital Rain background effect
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$#@%&+-/*<>[]";
+        const charArr = chars.split("");
+        const fontSize = 14;
+        let columns = canvas.width / fontSize;
+        let drops = [];
+
+        function initDrops() {
+            columns = Math.floor(canvas.width / fontSize) + 1;
+            drops = [];
+            for (let x = 0; x < columns; x++) {
+                drops[x] = Math.random() * -100;
+            }
+        }
+        initDrops();
+        window.addEventListener('resize', initDrops);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.font = fontSize + 'px "JetBrains Mono", monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = charArr[Math.floor(Math.random() * charArr.length)];
+                const x = i * fontSize;
+                const y = drops[i] * fontSize;
+
+                if (Math.random() > 0.98) {
+                    ctx.fillStyle = '#ff9999'; // Bright head
+                } else if (Math.random() > 0.8) {
+                    ctx.fillStyle = '#ff3333'; // Vibrant red
+                } else {
+                    ctx.fillStyle = '#990000'; // Darker trail red
+                }
+
+                ctx.fillText(text, x, y);
+
+                if (y > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 33);
+    </script>
+</body>
+</html>
